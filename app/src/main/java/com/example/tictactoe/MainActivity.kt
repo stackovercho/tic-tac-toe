@@ -1,6 +1,7 @@
 package com.example.tictactoe
 
 import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -55,13 +56,19 @@ class MainActivity : AppCompatActivity() {
         status = TextView(this)
         status.layoutParams = lp
         status.gravity = Gravity.CENTER
+        status.textSize = 72.0f
+        status.text = ttt.result()
+        status.setBackgroundColor(Color.GREEN)
+        status.width =  w * TicTacToe.SIDE
 
+        gridLayout.addView(status)
         setContentView(gridLayout)
     }
 
     fun update(row: Int, col: Int) {
-        // play
+        // play (update the state of the Model
         val play: Int = ttt.play(row, col)
+        // update the View
         buttons[row][col].text = when(play) {
             1 -> "X"
             2 -> "O"
@@ -71,6 +78,10 @@ class MainActivity : AppCompatActivity() {
         // check if game is over
         if(ttt.isGameOver()) {
             enableButtons(false)
+            status.setBackgroundColor(Color.RED)
+            status.text = ttt.result()
+
+            // ask user to play again
         }
     }
 
