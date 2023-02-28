@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.GridLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -82,7 +83,15 @@ class MainActivity : AppCompatActivity() {
             status.text = ttt.result()
 
             // ask user to play again
+            showNewGameDialog()
         }
+    }
+
+    private fun showNewGameDialog() {
+        val alert: AlertDialog.Builder = AlertDialog.Builder(this)
+//        alert.setPositiveButton("Yes") {
+//            Log.w("MainActivity", "test")
+//        }
     }
 
     fun enableButtons(enabled: Boolean): Unit {
