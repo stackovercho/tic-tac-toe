@@ -1,5 +1,6 @@
 package com.example.tictactoe
 
+import android.content.DialogInterface
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.GridLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
@@ -64,6 +66,10 @@ class MainActivity : AppCompatActivity() {
 
         gridLayout.addView(status)
         setContentView(gridLayout)
+
+        // make a toast
+        val toast: Toast = Toast.makeText(this, "HI", Toast.LENGTH_SHORT)
+        toast.show()
     }
 
     fun update(row: Int, col: Int) {
@@ -89,15 +95,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun showNewGameDialog() {
         val alert: AlertDialog.Builder = AlertDialog.Builder(this)
-//        alert.setPositiveButton("Yes") {
-//            Log.w("MainActivity", "test")
-//        }
+        var playAgain: PlayDialog = PlayDialog()
+        alert.setPositiveButton("YES", playAgain)
+        alert.setNegativeButton("NO", playAgain)
+        alert.setTitle("This is fun")
+        alert.setMessage("Play again?")
+        alert.show()
     }
 
     fun enableButtons(enabled: Boolean): Unit {
         for (row in buttons) {
             for (col in row) {
                 col.isEnabled = enabled
+            }
+        }
+    }
+
+    fun resetButtons(): Unit {
+        for (row in buttons) {
+            for (col in row) {
+                col.text = ""
             }
         }
     }
@@ -111,6 +128,20 @@ class MainActivity : AppCompatActivity() {
                         update(i, j)
                     }
                 }
+            }
+        }
+    }
+
+    inner class PlayDialog: DialogInterface.OnClickListener {
+        override fun onClick(dialog: DialogInterface?, which: Int) {
+            if(which == -1) { // YES play again
+                ttt.resetGame()
+                enableButtons(true)
+                status.setBackgroundColor(Color.GREEN)
+                resetButtons()
+                status.text = ttt.result()
+            } else if (which == -2) { // exit the app
+                this@MainActivity.finish()
             }
         }
     }
