@@ -28,33 +28,28 @@ class MainActivity : AppCompatActivity() {
         Log.w("CMSC", "width of deice is $width")
         val w: Int = width / 3
 
-        val gridLayout: GridLayout = GridLayout(this)
+        val gridLayout = GridLayout(this)
         gridLayout.rowCount = TicTacToe.SIDE + 1
         gridLayout.columnCount = TicTacToe.SIDE
 
-//        buttons = Array<Array<Button>>(TicTacToe.SIDE) { i ->
-//            Array<Button>(TicTacToe.SIDE) { j ->
-//                Button(this)
-//            }
-//        }
-        buttons = Array(TicTacToe.SIDE) { i ->
-            Array(TicTacToe.SIDE) { j ->
+        buttons = Array(TicTacToe.SIDE) {
+            Array(TicTacToe.SIDE) {
                 Button(this)
             }
         }
-        val bh: ButtonHandler = ButtonHandler()
+        val bh = ButtonHandler()
 
-        for (i in buttons.indices) {
-            for (j in buttons[i].indices) {
-                gridLayout.addView(buttons[i][j], w, w)
-                buttons[i][j].textSize = 72.0f
-                buttons[i][j].setOnClickListener(bh)
+        for (row in buttons) {
+            for (button in row) {
+                gridLayout.addView(button, w, w)
+                button.textSize = 72.0f
+                button.setOnClickListener(bh)
             }
         }
 
-        var rowSpec: GridLayout.Spec = GridLayout.spec(TicTacToe.SIDE, 1)
-        var colSpec: GridLayout.Spec = GridLayout.spec(0, TicTacToe.SIDE)
-        var lp: GridLayout.LayoutParams = GridLayout.LayoutParams(rowSpec, colSpec)
+        val rowSpec: GridLayout.Spec = GridLayout.spec(TicTacToe.SIDE, 1)
+        val colSpec: GridLayout.Spec = GridLayout.spec(0, TicTacToe.SIDE)
+        val lp: GridLayout.LayoutParams = GridLayout.LayoutParams(rowSpec, colSpec)
 
         status = TextView(this)
         status.layoutParams = lp
@@ -95,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showNewGameDialog() {
         val alert: AlertDialog.Builder = AlertDialog.Builder(this)
-        var playAgain: PlayDialog = PlayDialog()
+        val playAgain = PlayDialog()
         alert.setPositiveButton("YES", playAgain)
         alert.setNegativeButton("NO", playAgain)
         alert.setTitle("This is fun")
@@ -103,18 +98,18 @@ class MainActivity : AppCompatActivity() {
         alert.show()
     }
 
-    fun enableButtons(enabled: Boolean): Unit {
+    fun enableButtons(enabled: Boolean) {
         for (row in buttons) {
-            for (col in row) {
-                col.isEnabled = enabled
+            for (button in row) {
+                button.isEnabled = enabled
             }
         }
     }
 
-    fun resetButtons(): Unit {
+    fun resetButtons() {
         for (row in buttons) {
-            for (col in row) {
-                col.text = ""
+            for (button in row) {
+                button.text = ""
             }
         }
     }
@@ -123,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         override fun onClick(v: View?) {
             Log.w("CMSC", "clicked on $v")
             for (i in buttons.indices) {
-                for (j in 0..buttons[i].size - 1) {
+                for (j in buttons[i].indices) {
                     if (v == buttons[i][j]) {
                         update(i, j)
                     }
